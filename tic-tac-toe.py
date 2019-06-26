@@ -7,10 +7,13 @@ import Graphics as G
 
 pygame.init()
 
-imgX = pygame.image.load('x.png')
+Windows = pygame.display.set_mode((500,500))
+pygame.display.set_caption('Tic-Tac-Toe')
+
+imgX = pygame.image.load('x.png').convert_alpha()
 imgX = pygame.transform.scale(imgX,(100,100))
 
-imgY = pygame.image.load('O.png')
+imgY = pygame.image.load('O.png').convert_alpha()
 imgY = pygame.transform.scale(imgY,(100,100))
 
 grid = [ [ None, None, None ], \
@@ -221,7 +224,11 @@ def GameMode2(Windows):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                return 1
+            if event.type is MOUSEBUTTONDOWN:
+                (mouseX, mouseY) = pygame.mouse.get_pos()
+                if mouseX >=350 and mouseX <= 500 and mouseY >= 100 and mouseY <= 170:
+                    run = False
             if isGameOver == False and len(freeMoves(grid)) != 0:
                 if turn == 1:
                     if event.type is MOUSEBUTTONDOWN:
@@ -229,7 +236,7 @@ def GameMode2(Windows):
                         if(x,y) != (-1,-1):
                             grid[x][y] = Pl
                             turn = 2
-                            tturn=-tturn
+                            tturn = -tturn
                 else:
                     AI3(grid, AI)
                     turn = 1
@@ -241,14 +248,15 @@ def GameMode2(Windows):
                 elif CheckWinner(grid, Pl) == True:
                     winner = Pl
             Windows.fill((0,0,0))
-            G.ShowWinner(Windows, winner)
             DrawBoard(Windows)
+            G.ShowWinner(Windows, winner)
+            G.BackToMenu(Windows)
             if AI == 'X':
             	G.ShowStatus(Windows, 'Robot ','Player ', tturn)
             else:
             	G.ShowStatus(Windows, 'Player ','Robot ', tturn)
             isGameOver = gameOver(grid, AI)
-    return 1
+    return -1
 
 def ResetMap():
 	for i in range(3):
@@ -257,8 +265,6 @@ def ResetMap():
 
 def main():
     mode = -1
-    Windows = pygame.display.set_mode((500,500))
-    pygame.display.set_caption('Tic-Tac-Toe')
     
     while mode == -1:
         Windows.fill((0,0,0))    
