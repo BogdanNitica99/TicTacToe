@@ -3,25 +3,25 @@ import random
 from pygame.locals import *
 
 def ShowStatus(Windows, name1, name2, player):
-    font = pygame.font.SysFont('comicsans', 27, True)
+    font = pygame.font.SysFont('arial', 27, True)
     
     textPlayer1 = font.render(str(name1) + ': X', 1, (255,0,0))
     Windows.blit(textPlayer1, (360,10))
     textPlayer2 = font.render(str(name2) + ': O', 1, (255,0,0))
-    Windows.blit(textPlayer2, (360,25))
+    Windows.blit(textPlayer2, (360,35))
     
     textTurn = font.render('Is Turn for :', 1, (255,255,255))
-    Windows.blit(textTurn, (360, 40))
+    Windows.blit(textTurn, (360, 60))
     if player == 1:
         textTurnPlayer = font.render(' X', 1, (255,255,255))
-        Windows.blit(textTurnPlayer, (468, 40))
+        Windows.blit(textTurnPlayer, (475, 60))
     else:
         textTurnPlayer = font.render(' O', 1, (255,255,255))
-        Windows.blit(textTurnPlayer, (468, 40))
+        Windows.blit(textTurnPlayer, (475, 60))
     pygame.display.update()
 
 def ShowWinner(Windows, winner):
-    font = pygame.font.SysFont('comicsans', 27, True)
+    font = pygame.font.SysFont('arial', 27, True)
     if winner != None:
         if winner == 'Draw':
             textWinner1 = font.render('Stalemate', 1, (255,255,0))
@@ -32,35 +32,35 @@ def ShowWinner(Windows, winner):
         #RestartLevel(Windows)
     pygame.display.update()
 
-def RestartLevel(Windows):
-    font2 = pygame.font.SysFont('comicsans', 25, True)
+def BackToMenu(Windows):
+    font2 = pygame.font.SysFont('arial', 25, True)
 
-    pygame.draw.rect(Windows, (255,0,0), (350, 100, 150,90), 0)
-    textButton1 = font2.render('Restart the Game', 1, (0,255,255))
-    Windows.blit(textButton1, (350,135))
+    pygame.draw.rect(Windows, (120,120,120), (350, 100, 150,70), 0)
+    textButton1 = font2.render('Back to Menu', 1, (0,0,0))
+    Windows.blit(textButton1, (360,115))
 
 def gameIntro(Windows):
     intro = True
 
-    font1 = pygame.font.SysFont('comicsans', 70, True)
-    font2 = pygame.font.SysFont('comicsans', 25, True)
+    font1 = pygame.font.SysFont('arial', 70, True)
+    font2 = pygame.font.SysFont('arial', 25, True)
     
-    textNameGame = font1.render('Tic-Tac-Toe', 1, (255,0,255))
+    textNameGame = font1.render('Tic-Tac-Toe', 1, (34,24,120))
     Windows.blit(textNameGame, (100,10))
 
     pygame.draw.rect(Windows, (255,0,0), (70, 100, 150,90), 0)
-    textButton1 = font2.render('Human v Human', 1, (0,255,255))
-    Windows.blit(textButton1, (73,135))
+    textButton1 = font2.render('2 Players', 1, (0,255,255))
+    Windows.blit(textButton1, (100,130))
 
     pygame.draw.rect(Windows, (255,0,0), (270, 100, 150,90), 0)
-    textButton2 = font2.render('Human v AI', 1, (0,255,255))
-    Windows.blit(textButton2, (285,135))
+    textButton2 = font2.render('1 Player', 1, (0,255,255))
+    Windows.blit(textButton2, (300,130))
 
-    textInfo1 = font2.render('A game made by Nitica Bogdan for fun', 1, (0,255,255))
-    Windows.blit(textInfo1, (10,300))
+    #textInfo1 = font2.render('A game made by Nitica Bogdan for fun', 1, (0,255,255))
+    #Windows.blit(textInfo1, (10,300))
 
-    textInfo2 = font2.render('Version 0.2', 1, (0,255,255))
-    Windows.blit(textInfo2, (10,350))
+    #textInfo2 = font2.render('Version 0.2', 1, (0,255,255))
+    #Windows.blit(textInfo2, (10,350))
     
     pygame.display.update()
 
@@ -79,23 +79,23 @@ def gameIntro(Windows):
 def ChooseWhoToPlay(Windows):
     intro = True
 
-    font1 = pygame.font.SysFont('comicsans', 50, True)
-    font2 = pygame.font.SysFont('comicsans', 40, True)
+    font1 = pygame.font.SysFont('arial', 50, True)
+    font2 = pygame.font.SysFont('arial', 40, True)
     
-    textName = font1.render('Choose who to Play', 1, (255,0,255))
-    Windows.blit(textName, (100,10))
+    textName = font1.render('Choose who to Play', 1, (37,122,31))
+    Windows.blit(textName, (50,10))
 
-    pygame.draw.rect(Windows, (255,0,0), (70, 100, 60,60), 0)
-    textButton1 = font2.render('X', 1, (0,255,255))
-    Windows.blit(textButton1, (90,120))
+    pygame.draw.rect(Windows, (130,130,130), (70, 100, 60,60), 0)
+    textButton1 = font2.render('X', 1, (0,0,0))
+    Windows.blit(textButton1, (87,105))
 
-    pygame.draw.rect(Windows, (255,0,0), (150, 100, 150,60), 0)
-    textButton2 = font2.render('Random', 1, (0,255,255))
-    Windows.blit(textButton2, (160,120))
+    pygame.draw.rect(Windows, (130,130,130), (150, 100, 150,60), 0)
+    textButton2 = font2.render('Random', 1, (0,0,0))
+    Windows.blit(textButton2, (160,105))
 
-    pygame.draw.rect(Windows, (255,0,0), (320, 100, 60,60), 0)
-    textButton3 = font2.render('O', 1, (0,255,255))
-    Windows.blit(textButton3, (340,120))
+    pygame.draw.rect(Windows, (130,130,130), (320, 100, 60,60), 0)
+    textButton3 = font2.render('O', 1, (0,0,0))
+    Windows.blit(textButton3, (335,105))
     
     pygame.display.update()
 

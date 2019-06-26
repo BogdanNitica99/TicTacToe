@@ -169,6 +169,7 @@ def GameMode1(Windows):
     player = 1
 
     G.ShowStatus(Windows,'Player1', 'Player2', player)
+    G.BackToMenu(Windows)
     
     run = True
     while run:
@@ -176,8 +177,11 @@ def GameMode1(Windows):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                return 1
             elif event.type is MOUSEBUTTONDOWN:
+                (mouseX, mouseY) = pygame.mouse.get_pos()
+                if mouseX >=350 and mouseX <= 500 and mouseY >= 100 and mouseY <= 170:
+                    run = False
                 if isGameOver == False and len(freeMoves(grid)) != 0:
                     (x,y) = clickBoard()
                     if (x,y) != (-1,-1):
@@ -196,9 +200,10 @@ def GameMode1(Windows):
             isGameOver = gameOver(grid, 'X')
             Windows.fill((0,0,0))
             DrawBoard(Windows)
+            G.BackToMenu(Windows)
             G.ShowStatus(Windows,'Player1', 'Player2', player)
             G.ShowWinner(Windows, winner)
-    return False
+    return -1
 
 def GameMode2(Windows):
     isGameOver = False
@@ -255,16 +260,25 @@ def GameMode2(Windows):
             #G.ShowWinner(Windows, winner)
     return 1
 
+def ResetMap():
+	for i in range(3):
+		for j in range(3):
+			grid[i][j] = None
+
 def main():
     mode = -1
     Windows = pygame.display.set_mode((500,500))
     pygame.display.set_caption('Tic-Tac-Toe')
-
-    gameMode = G.gameIntro(Windows)
-
-    Windows.fill((0,0,0))
     
     while mode == -1:
+        Windows.fill((0,0,0))    
+
+        ResetMap()
+
+        gameMode = G.gameIntro(Windows)
+
+        Windows.fill((0,0,0))
+
         if gameMode == 1:
             mode = GameMode1(Windows)
         else:
