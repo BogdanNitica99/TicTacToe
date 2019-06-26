@@ -240,24 +240,14 @@ def GameMode2(Windows):
                     winner = AI
                 elif CheckWinner(grid, Pl) == True:
                     winner = Pl
-                G.ShowWinner(Windows, winner)
-                #G.RestartLevel(Windows)
-                #if event.type is MOUSEBUTTONDOWN:
-                    #(mouseX, mouseY) = pygame.mouse.get_pos()
-                    #if mouseX >=350 and mouseX <= 500 and mouseY >= 100 and mouseY <= 190:
-                        #return -1
-                    
-                
+            Windows.fill((0,0,0))
+            G.ShowWinner(Windows, winner)
+            DrawBoard(Windows)
+            if AI == 'X':
+            	G.ShowStatus(Windows, 'Robot ','Player ', tturn)
             else:
-            	isGameOver = gameOver(grid, AI)
-            	Windows.fill((0,0,0))
-            	DrawBoard(Windows)
-            	if AI == 'X':
-                	G.ShowStatus(Windows, 'Robot ','Player ', tturn)
-            	else:
-                	G.ShowStatus(Windows, 'Player ','Robot ', tturn)
-
-            #G.ShowWinner(Windows, winner)
+            	G.ShowStatus(Windows, 'Player ','Robot ', tturn)
+            isGameOver = gameOver(grid, AI)
     return 1
 
 def ResetMap():
