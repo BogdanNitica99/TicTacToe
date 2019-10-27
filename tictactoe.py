@@ -1,71 +1,9 @@
 from math import inf as infinity
 from random import choice
-import pygame
-from pygame.locals import *
 
-import Graphics as G
-
-pygame.init()
-
-Windows = pygame.display.set_mode((500,500))
-pygame.display.set_caption('Tic-Tac-Toe')
-
-imgX = pygame.image.load('x.png').convert_alpha()
-imgX = pygame.transform.scale(imgX,(100,100))
-
-imgY = pygame.image.load('O.png').convert_alpha()
-imgY = pygame.transform.scale(imgY,(100,100))
-
-grid = [ [ None, None, None ], \
-         [ None, None, None ], \
-         [ None, None, None ] ]
-
-def DrawBoard(Windows):
-    pygame.draw.line(Windows, (255,255,255), (100,0), (100,300),2)
-    pygame.draw.line(Windows, (255,255,255), (200,0), (200,300),2)
-
-    pygame.draw.line(Windows, (255,255,255), (0,100), (300,100),2)
-    pygame.draw.line(Windows, (255,255,255), (0,200), (300,200),2)
-
-    for i in range (3):
-        for j in range(3):
-            if grid[i][j] == 'X':
-                Windows.blit(imgX, (j*100, i*100))
-            elif grid[i][j] == 'O':
-                Windows.blit(imgY, (j*100, i*100))
-
-    pygame.display.update()
-    
-def BoardPos(mouseX, mouseY):
-    if(mouseY < 100):
-        row = 0
-    elif(mouseY < 200):
-        row = 1
-    elif(mouseY < 300):
-        row = 2
-    else:
-        row = -1
-
-    if(mouseX < 100):
-        col = 0
-    elif(mouseX < 200):
-        col = 1
-    elif(mouseX < 300):
-        col = 2
-    else:
-        col = -1
-
-    return (row, col)
-
-def clickBoard():
-    (mouseX, mouseY) = pygame.mouse.get_pos()
-    (row, col) = BoardPos(mouseX, mouseY)
-
-    if(row >= 0 and col >= 0):
-        if(grid[row][col] == None):
-            return (row, col)    
-    return (-1,-1)
-
+boardWeb = [ [ None, None, None ], \
+             [ None, None, None ], \
+             [ None, None, None ] ]
 #-------------------------------------------------------------Ai 3 MiniMax Alg -------------------------------
 
 def miniMax(state, depth, player, Comp):
@@ -166,121 +104,56 @@ def CheckWinner(state, player):
             return True
     return False
 
-def GameMode1(Windows):
-    winner = None
-    isGameOver = False
-    player = 1
+def transformingValues(value):
+    posX, posY = -1, -1
 
-    G.ShowStatus(Windows,'Player1', 'Player2', player)
-    G.BackToMenu(Windows)
-    
-    run = True
-    while run:
-        pygame.time.delay(100)
+    if value == 0:
+        posX, posY = 0, 0
+    if value == 1:
+        posX, posY = 0, 1
+    if value == 2:
+        posX, posY = 0, 2
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return 1
-            elif event.type is MOUSEBUTTONDOWN:
-                (mouseX, mouseY) = pygame.mouse.get_pos()
-                if mouseX >=350 and mouseX <= 500 and mouseY >= 100 and mouseY <= 170:
-                    run = False
-                if isGameOver == False and len(freeMoves(grid)) != 0:
-                    (x,y) = clickBoard()
-                    if (x,y) != (-1,-1):
-                        if player == 1:
-                            grid[x][y] = 'X'
-                            player = 2
-                        else:
-                            grid[x][y] = 'O'
-                            player = 1
-            if isGameOver == True or len(freeMoves(grid)) == 0:
-                winner = 'Draw'
-                if CheckWinner(grid, 'X') == True:
-                    winner = 'X'
-                elif CheckWinner(grid, 'O') == True:
-                    winner = 'O'
-            isGameOver = gameOver(grid, 'X')
-            Windows.fill((0,0,0))
-            DrawBoard(Windows)
-            G.BackToMenu(Windows)
-            G.ShowStatus(Windows,'Player1', 'Player2', player)
-            G.ShowWinner(Windows, winner)
-    return -1
+    if value == 3:
+        posX, posY = 1, 0
+    if value == 4:
+        posX, posY = 1, 1
+    if value == 5:
+        posX, posY = 1, 2
 
-def GameMode2(Windows):
-    isGameOver = False
-    winner = None
-    turn = 1
-    tturn = 1
+    if value == 6:
+        posX, posY = 2, 0
+    if value == 7:
+        posX, posY = 2, 1
+    if value == 8:
+        posX, posY = 2, 2
 
-    Pl, AI, turn = G.SettingTheGame(Windows)
-    
-    Windows.fill((0,0,0))
-    
-    run = True
-    while run:
-        pygame.time.delay(100)
+    return (posX, posY)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return 1
-            if event.type is MOUSEBUTTONDOWN:
-                (mouseX, mouseY) = pygame.mouse.get_pos()
-                if mouseX >=350 and mouseX <= 500 and mouseY >= 100 and mouseY <= 170:
-                    run = False
-            if isGameOver == False and len(freeMoves(grid)) != 0:
-                if turn == 1:
-                    if event.type is MOUSEBUTTONDOWN:
-                        (x,y) = clickBoard()
-                        if(x,y) != (-1,-1):
-                            grid[x][y] = Pl
-                            turn = 2
-                            tturn = -tturn
-                else:
-                    AI3(grid, AI)
-                    turn = 1
-                    tturn = -tturn
-            if isGameOver == True or len(freeMoves(grid)) == 0:
-                winner = 'Draw'
-                if CheckWinner(grid, AI) == True:
-                    winner = AI
-                elif CheckWinner(grid, Pl) == True:
-                    winner = Pl
-            Windows.fill((0,0,0))
-            DrawBoard(Windows)
-            G.ShowWinner(Windows, winner)
-            G.BackToMenu(Windows)
-            if AI == 'X':
-            	G.ShowStatus(Windows, 'Robot ','Player ', tturn)
-            else:
-            	G.ShowStatus(Windows, 'Player ','Robot ', tturn)
-            isGameOver = gameOver(grid, AI)
-    return -1
+def resetGame():
+    global boardWeb
 
-def ResetMap():
-	for i in range(3):
-		for j in range(3):
-			grid[i][j] = None
+    boardWeb = [ [ None, None, None ], \
+             [ None, None, None ], \
+             [ None, None, None ] ]
 
-def main():
-    mode = -1
-    
-    while mode == -1:
-        Windows.fill((0,0,0))    
+def GameModeFromWeb1(value, playerWeb):
+    global boardWeb
 
-        ResetMap()
+    (posX, posY) = transformingValues(int(value))
 
-        gameMode = G.gameIntro(Windows)
+    boardWeb[posX][posY] = playerWeb
 
-        Windows.fill((0,0,0))
+    isGameOver = gameOver(boardWeb, 'X')
 
-        if gameMode == 1:
-            mode = GameMode1(Windows)
-        else:
-            mode = GameMode2(Windows)
-        
-    pygame.quit()
+    if isGameOver == True or len(freeMoves(boardWeb)) == 0:
+        winner = 'Draw'
+        if CheckWinner(boardWeb, 'X') == True:
+            winner = 'X'
+        elif CheckWinner(boardWeb, 'O') == True:
+            winner = 'O'
+        return (isGameOver, winner)
+    else:
+        return (False, -1)
 
-main()
     

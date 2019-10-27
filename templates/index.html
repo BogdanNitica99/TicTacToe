@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Tic Tac Toe</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<button id="singlePlayer">Single Player</button>
+
+	<button id="multiPlayer">Multi Player</button>
+
+	<script>
+		$("button").click(function() {
+    		console.log(this.id);
+    		var object = [this.id];
+
+    		$.ajax({
+		        url: '/',
+		        data: JSON.stringify(object),
+		        contentType: 'application/json;charset=UTF-8',
+		        type: 'POST',
+		        success: function(response) {
+		        	window.location = "/singlePlayer";
+		            //console.log(response);
+		        },
+		        error: function(error) {
+		            console.log(error);
+		        }
+			});
+		});
+	
+
+	</script>
+
+	
+
+</body>
+</html>
