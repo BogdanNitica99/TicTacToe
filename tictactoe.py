@@ -1,25 +1,25 @@
 from math import inf as infinity
 from random import choice
 
-boardWeb = [ [ None, None, None ], \
+board_web = [ [ None, None, None ], \
              [ None, None, None ], \
              [ None, None, None ] ]
 #-------------------------------------------------------------Ai 3 MiniMax Alg -------------------------------
 
-def miniMax(state, depth, player, Comp):
+def mini_max(state, depth, player, Comp):
     if player == Comp:
         best = [-1,-1,-infinity]
     else:
         best = [-1,-1,+infinity]
     
-    if depth == 0 or gameOver(state, Comp):
+    if depth == 0 or game_over(state, Comp):
         score = evaluate(state, Comp)
         return [-1, -1, score]
 
-    for move in freeMoves(state):
+    for move in free_moves(state):
         x, y = move[0], move[1]
         state[x][y] = player
-        score = miniMax(state, depth-1, changePlayer(player), Comp)
+        score = mini_max(state, depth-1, change_player(player), Comp)
         state[x][y] = None
         score[0], score[1] = x,y
 
@@ -32,29 +32,29 @@ def miniMax(state, depth, player, Comp):
         
     return best
     
-def AI3(board, Ai):
-    depth = len(freeMoves(board))
-    if depth == 0 or gameOver(board, Ai):
+def ai_3(board, Ai):
+    depth = len(free_moves(board))
+    if depth == 0 or game_over(board, Ai):
         return
     if depth == 9:
         x = choice([0,1,2])
         y = choice([0,1,2])
     else:
-        move = miniMax(board, depth, Ai, Ai)
+        move = mini_max(board, depth, Ai, Ai)
         x, y = move[0], move[1]
     set_move(x,y,Ai)
 
 def evaluate(state, Comp):
-    if CheckWinner(state, Comp):
+    if check_winner(state, Comp):
         score = +1
-    elif CheckWinner(state, changePlayer(Comp)):
+    elif check_winner(state, change_player(Comp)):
         score = -1
     else:
         score = 0
 
     return score
 
-def freeMoves(state):
+def free_moves(state):
     Moves = []
     for i in range(3):
         for j in range(3):
@@ -62,10 +62,10 @@ def freeMoves(state):
                 Moves.append([i,j])
     return Moves
 
-def gameOver(state, Comp):
-    return CheckWinner(state, Comp) or CheckWinner(state, changePlayer(Comp))
+def game_over(state, Comp):
+    return check_winner(state, Comp) or check_winner(state, change_player(Comp))
 
-def changePlayer(player):
+def change_player(player):
     if player == 'O':
         player = 'X'
     else:
@@ -73,7 +73,7 @@ def changePlayer(player):
     return player
 
 def valid_move(x, y):
-    if [x, y] in freeMoves(grid):
+    if [x, y] in free_moves(grid):
         return True
     else:
         return False
@@ -87,9 +87,9 @@ def set_move(x, y, player):
 
 #-------------------------------------------------------------------------------------------------------------
 
-def CheckWinner(state, player):
+def check_winner(state, player):
     stri = str(player+player+player)
-    #print(stri)
+
     for i in range (3):
         check1 = ''
         check2 = ''
@@ -104,56 +104,60 @@ def CheckWinner(state, player):
             return True
     return False
 
-def transformingValues(value):
-    posX, posY = -1, -1
+def transforming_values(value):
+    pos_x, pos_y = -1, -1
 
     if value == 0:
-        posX, posY = 0, 0
+        pos_x, pos_y = 0, 0
     if value == 1:
-        posX, posY = 0, 1
+        pos_x, pos_y = 0, 1
     if value == 2:
-        posX, posY = 0, 2
+        pos_x, pos_y = 0, 2
 
     if value == 3:
-        posX, posY = 1, 0
+        pos_x, pos_y = 1, 0
     if value == 4:
-        posX, posY = 1, 1
+        pos_x, pos_y = 1, 1
     if value == 5:
-        posX, posY = 1, 2
+        pos_x, pos_y = 1, 2
 
     if value == 6:
-        posX, posY = 2, 0
+        pos_x, pos_y = 2, 0
     if value == 7:
-        posX, posY = 2, 1
+        pos_x, pos_y = 2, 1
     if value == 8:
-        posX, posY = 2, 2
+        pos_x, pos_y = 2, 2
 
-    return (posX, posY)
+    return (pos_x, pos_y)
 
-def resetGame():
-    global boardWeb
+def reset_game():
+    global board_web
 
-    boardWeb = [ [ None, None, None ], \
+    board_web = [ [ None, None, None ], \
              [ None, None, None ], \
              [ None, None, None ] ]
 
-def GameModeFromWeb1(value, playerWeb):
-    global boardWeb
+def game_mode_web1(value, playerWeb):
+    global board_web
 
-    (posX, posY) = transformingValues(int(value))
+    (pos_x, pos_y) = transforming_values(int(value))
 
-    boardWeb[posX][posY] = playerWeb
+    board_web[pos_x][pos_y] = playerWeb
 
-    isGameOver = gameOver(boardWeb, 'X')
+    is_game_over = game_over(board_web, 'X')
 
-    if isGameOver == True or len(freeMoves(boardWeb)) == 0:
+    if is_game_over == True or len(free_moves(board_web)) == 0:
         winner = 'Draw'
-        if CheckWinner(boardWeb, 'X') == True:
+        if check_winner(board_web, 'X') == True:
             winner = 'X'
-        elif CheckWinner(boardWeb, 'O') == True:
+        elif check_winner(board_web, 'O') == True:
             winner = 'O'
-        return (isGameOver, winner)
+        return (is_game_over, winner)
     else:
         return (False, -1)
+    
+def game_mode_web2(value, playerWeb):
+    #Need to make this function
+    return (True, 0)
 
     
